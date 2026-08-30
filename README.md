@@ -26,9 +26,6 @@ CyberGuard AI addresses this problem by combining:
 
 # Current Project Status
 
-## Completed – Rahul
-
-The vulnerability data collection and processing pipeline has been completed.
 
 ### Data Sources
 
