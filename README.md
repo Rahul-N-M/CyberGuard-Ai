@@ -26,6 +26,7 @@ CyberGuard AI addresses this problem by combining:
 ---
 
 # Current Project Status
+Vinod and Varun, The current risk_features.csv has 6,316 records. 300 records have missing CVSS/EPSS/Severity fields, while 6,016 have complete scoring data. Please decide the appropriate ML preprocessing strategy for those 300 records (e.g., exclude them from training if appropriate). I kept the original data intact.”
 
 
 
