@@ -1,0 +1,55 @@
+CYBERGUARD AI - DATA QUALITY REPORT
+=============================================
+
+Total records: 6316
+Total columns: 9
+Duplicate CVEs: 0
+
+MISSING VALUES
+--------------------
+CVE_ID               0
+CVSS_Score         300
+CVSS_Version       300
+Severity           300
+Description          0
+Published_Date       0
+EPSS_Score         300
+EPSS_Percentile    300
+KEV                  0
+
+CVSS STATISTICS
+--------------------
+count    6016.000000
+mean        7.059707
+std         1.723647
+min         1.900000
+25%         5.500000
+50%         7.400000
+75%         8.100000
+max        10.000000
+
+EPSS STATISTICS
+--------------------
+count    6016.000000
+mean        0.031570
+std         0.101907
+min         0.000820
+25%         0.006330
+50%         0.010370
+75%         0.018160
+max         0.997960
+
+KEV DISTRIBUTION
+--------------------
+KEV
+0    6270
+1      46
+
+SEVERITY DISTRIBUTION
+--------------------
+Severity
+MEDIUM      2556
+HIGH        2370
+CRITICAL     912
+NaN          300
+LOW          178
