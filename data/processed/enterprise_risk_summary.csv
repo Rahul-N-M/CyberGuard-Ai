@@ -1,0 +1,31 @@
+asset_id,asset_name,asset_type,criticality,internet_exposure,business_impact_score,environment,total_open_cves,kev_count,avg_cvss,avg_epss,total_remediation_hours
+ASSET-003,Customer Database Server,Database,CRITICAL,0,10,Production,770,4,7.5,0.0462,9266.0
+ASSET-001,Payment Processing Server,Server,CRITICAL,1,10,Production,561,3,6.86,0.0268,6166.0
+ASSET-005,Authentication & SSO Server,Server,HIGH,1,9,Production,1502,17,6.97,0.0429,11172.0
+ASSET-002,Financial Reporting Database,Database,VERY_HIGH,0,9,Production,752,4,7.48,0.0482,7487.5
+ASSET-004,Public Web Server,Server,HIGH,1,8,Production,1620,12,7.19,0.0474,12783.0
+ASSET-028,ERP System (SAP),Server,HIGH,0,8,Production,779,8,6.68,0.0306,3933.5
+ASSET-025,HR & Payroll System,Server,HIGH,0,8,Production,378,6,7.15,0.0292,2242.5
+ASSET-007,Order Management System,Server,HIGH,0,8,Production,342,4,6.73,0.0327,1936.0
+ASSET-009,Load Balancer / API Gateway,Network,HIGH,1,8,Production,565,4,7.17,0.0389,4245.0
+ASSET-029,Cloud Storage Bucket (S3/GCS),Cloud,HIGH,1,8,Production,480,3,7.1,0.0224,4004.0
+ASSET-024,Developer Secrets Manager,Server,HIGH,0,8,Development,366,2,7.02,0.0324,2388.0
+ASSET-006,Product Catalogue API Server,Server,HIGH,1,7,Production,968,9,7.06,0.0437,7332.5
+ASSET-010,VPN Gateway,Network,HIGH,1,7,Production,549,7,7.03,0.0334,4507.5
+ASSET-016,SIEM & Log Management Server,Server,HIGH,0,7,Production,491,1,6.67,0.0285,2611.0
+ASSET-013,Backup & Recovery Server,Server,MEDIUM,0,6,Production,183,2,6.85,0.0152,757.0
+ASSET-014,Analytics Data Warehouse,Database,MEDIUM,0,6,Production,472,1,7.91,0.0555,3361.0
+ASSET-026,Corporate Email Server,Server,MEDIUM,1,6,Corporate,212,0,7.04,0.0301,1347.0
+ASSET-012,Network Attached Storage (NAS),Storage,MEDIUM,0,5,Production,1424,11,7.03,0.0329,6467.0
+ASSET-030,CDN Edge Nodes,Network,MEDIUM,1,5,Production,1047,10,6.98,0.0412,5939.5
+ASSET-011,Internal DNS Server,Server,MEDIUM,0,5,Production,498,3,7.08,0.0303,2265.0
+ASSET-015,ML Model Serving API,Server,MEDIUM,0,5,Production,166,1,7.04,0.0147,614.0
+ASSET-008,Notification & Email Server,Server,MEDIUM,1,5,Production,134,0,6.91,0.0255,678.0
+ASSET-021,Container Orchestration Cluster (K8s),Server,MEDIUM,0,5,Development,113,0,7.03,0.0247,432.5
+ASSET-020,CI/CD Build Server,Server,MEDIUM,0,4,Development,742,3,6.65,0.032,2558.0
+ASSET-017,Vulnerability Scanner Host,Server,MEDIUM,0,4,Production,365,0,6.77,0.0248,1395.5
+ASSET-022,Developer Workstation Pool,Laptop,LOW,0,3,Development,1032,13,6.84,0.0323,3116.0
+ASSET-018,Staging Web Server,Server,LOW,1,3,Staging,1053,10,7.02,0.0496,4489.0
+ASSET-027,Employee Endpoint Fleet,Laptop,LOW,0,3,Corporate,498,7,7.05,0.0303,1699.5
+ASSET-023,Test / QA Server,Server,LOW,0,2,Development,149,2,6.88,0.0187,469.5
+ASSET-019,Staging Database,Database,LOW,0,2,Staging,455,1,7.93,0.0604,2714.0
