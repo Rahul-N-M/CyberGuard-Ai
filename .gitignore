@@ -15,3 +15,6 @@ data/cyberguard.db
 docs/handoff.md
 docs/handoff.docx
 docs/*handoff*
+# Generated ML datasets
+data/processed/risk_features.csv
+data/processed/ml/
