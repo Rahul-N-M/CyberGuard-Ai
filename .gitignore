@@ -15,6 +15,31 @@ data/cyberguard.db
 docs/handoff.md
 docs/handoff.docx
 docs/*handoff*
-# Generated ML datasets
+# ML generated datasets
 data/processed/risk_features.csv
 data/processed/ml/
+data/train.csv
+data/validation.csv
+data/test.csv
+data/processed/baseline_train.csv
+data/processed/baseline_val.csv
+data/processed/baseline_test.csv
+data/processed/*.csv
+
+# ML generated models
+models/*.pkl
+models/*.txt
+
+# ML generated prediction outputs
+outputs/*.csv
+
+# Generated plots
+outputs/*.png
+
+# Generated reports
+reports/*.md
+reports/*.json
+
+
+# Local LightGBM native binary
+src/ml/lib_lightgbm.dll
