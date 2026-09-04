@@ -238,6 +238,112 @@ Metrics: Risk Reduction per Engineer-Hour at budgets of 5 / 10 / 20 / 40 hours, 
 
 ---
 
+## Machine Learning Pipeline
+
+The CyberGuard AI vulnerability prioritization engine utilizes a chronological, leakage-free temporal machine learning pipeline:
+
+```
+NVD CVE data
+   │
+   ▼
+EPSS matching (95.68% coverage)
+   │
+   ▼
+Temporal observation construction (monthly panel snapshots)
+   │
+   ▼
+180-day future KEV target definition (Target_KEV_180d)
+   │
+   ▼
+Chronological train/validation/test split (2022 / 2023 / 2024)
+   │
+   ▼
+Preprocessing & feature encoding
+   │
+   ▼
+LightGBM temporal baseline (scale_pos_weight = 1037.25)
+   │
+   ▼
+Probability prediction
+   │
+   ▼
+Threshold / ranking evaluation & calibration diagnostics
+   │
+   ▼
+Future enterprise prioritization / Google OR-Tools integration
+```
+
+### Dataset Scale
+
+- **Total CVEs**: 98,084 CVEs covering 2022–2024
+- **EPSS Matches**: 93,844 records matched
+- **EPSS Coverage**: **95.68%**
+- **Temporal Observations**: **1,535,261** total panel observations
+- **Positive Observations**: **601** (`Target_KEV_180d = 1`)
+- **Unique Positive CVEs**: **215**
+
+### Chronological Split
+
+To ensure zero temporal data leakage, splits are partitioned chronologically by observation year:
+
+- **2022 (Train)**: 141,202 observations | 136 positive observations | 53 unique positive CVEs
+- **2023 (Validation)**: 485,969 observations | 217 positive observations | 72 unique positive CVEs
+- **2024 (Test)**: 908,090 observations | 248 positive observations | 90 unique positive CVEs
+
+### Model Discrimination & Test Results
+
+- **Training (2022)**: ROC-AUC = `0.689193`, PR-AUC = `0.001922`
+- **Validation (2023)**: ROC-AUC = `0.670827`, PR-AUC = `0.001115`
+- **Test (2024)**: ROC-AUC = **0.629073**, PR-AUC = **0.000863**
+
+#### Operating Threshold 0.95 Evaluation (2024 Test Set)
+
+- **True Positives (TP)**: 109
+- **False Positives (FP)**: 81,851
+- **True Negatives (TN)**: 825,991
+- **False Negatives (FN)**: 139
+- **Precision**: 0.001330 (0.133%)
+- **Recall**: **43.95%** (109 / 248)
+- **F1-Score**: 0.002652
+
+> **Important Distinction**:  
+> "The 43.95% recall is obtained using a threshold of 0.95 and does NOT represent Top-500 recall."
+
+#### Corrected Top-K Evaluation (2024 Test Set)
+
+- **Precision@500**: **0.002000**
+- **Recall@500**: **0.004032** (0.4032%, capturing 1 TP out of 248)
+
+#### Probability Saturation & Baseline Limitations
+
+- **Probability Saturation**: 79,693 test observations (8.78% of the test set) received a predicted probability of `1.0000`. This massive tie group creates severe limitations for standalone Top-K ranking.
+- **Feature Reliance**: Saturation-group observations have a mean `Vulnerability_Age_Days` of 110.7 days (vs 448.2 days for prob < 1.0) and mean `CVSS_Score` of 8.66 (vs 6.66). The model strongly relies on vulnerability age (77.4% feature gain) and CVSS score (14.7% gain) as cohort proxies.
+- **Classification**: This model is a **Temporal LightGBM Baseline**, **NOT production-ready**. Standalone Top-K prioritization is not yet viable without richer technical features, probability calibration, and downstream enterprise asset-risk filtering.
+
+---
+
+## Pending Work
+
+The following next steps are directly supported by the current empirical findings:
+
+1. Investigate and resolve the 2,993 stored-vs-computed vulnerability-age mismatches.
+2. Enrich features with NVD CVSS vector components:
+   - Attack Vector (AV)
+   - Attack Complexity (AC)
+   - Privileges Required (PR)
+   - Scope (S)
+   - CWE classification taxonomy
+3. Evaluate relative/percentile vulnerability-age features to avoid cohort proxy saturation.
+4. Retrain and compare improved temporal LightGBM models against this baseline.
+5. Apply probability calibration (isotonic regression / Platt scaling) and evaluate whether ranking improves.
+6. Improve Top-K discrimination within high-probability tie clusters.
+7. Integrate enterprise asset context (business impact score, asset criticality, internet exposure) with vulnerability risk.
+8. Implement/validate Google OR-Tools remediation-budget optimization (0-1 Knapsack across 5h / 10h / 20h / 40h budgets).
+9. Perform additional temporal/generalization validation across multi-year sliding windows.
+10. Define final operational threshold based on enterprise remediation capacity and SLA requirements.
+
+---
+
 ## Technology Stack
 
 | Purpose | Tool |

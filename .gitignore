@@ -39,7 +39,11 @@ outputs/*.png
 # Generated reports
 reports/*.md
 reports/*.json
+!reports/ml_results_summary.md
 
 
 # Local LightGBM native binary
 src/ml/lib_lightgbm.dll
+
+# Merge conflict scrap
+feature_conflict.txt
