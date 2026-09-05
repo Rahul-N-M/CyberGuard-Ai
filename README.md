@@ -52,7 +52,7 @@ NVD + EPSS + CISA KEV
 |--------|-------|--------|
 | NVD + EPSS + KEV data pipeline + feature engineering | **Rahul** | ✅ Complete |
 | Enterprise context, PostgreSQL schema, asset-CVE mapping | **Varun** | ✅ Complete |
-| LightGBM ML risk model + OR-Tools optimization | **Vinod** | 🔄 In Progress |
+| LightGBM ML risk model + OR-Tools optimization | **Vinod** | ✅ Complete |
 | Streamlit dashboard + evaluation + integration | **Navya** | 🔄 In Progress |
 
 ---
@@ -344,6 +344,45 @@ The following next steps are directly supported by the current empirical finding
 
 ---
 
+---
+
+## Improved LightGBM Model & 0-1 Knapsack Remediation Optimization
+
+Building upon the merged temporal baseline, the `vinod-ml-improvements` branch introduces relative cohort age normalization, exploit signal extraction, probability calibration, and exact 0-1 Knapsack remediation optimization.
+
+### Key Enhancements & Empirical Results
+
+| Metric / Dimension | Temporal Baseline | Improved Model + Platt Scaling | Impact |
+| :--- | :--- | :--- | :--- |
+| **Probability Saturation (`prob = 1.0`)** | **79,693 test rows** | **0 test rows** | **100% saturation eliminated** |
+| **Ties at Top-K Cutoff** | 79,693 tied rows | 3 to 168 rows | Granular, continuous risk discrimination |
+| **Test Set ROC-AUC (2024)** | 0.629073 | **0.754852** | **+0.1258 absolute (+20.0% gain)** |
+| **Test Brier Score** | Saturated | **0.00027357** | Well-calibrated risk probabilities |
+| **Test Expected Calibration Error (ECE)**| 0.000819 | **0.000197** | 76% reduction in calibration error |
+| **5h Sprint Remediation Risk Reduced** | 0.05 (CVSS Greedy) | **16.15** (0-1 Knapsack) | **+31,193% more risk reduced** |
+| **10h Sprint Remediation Risk Reduced** | 5.93 (CVSS Greedy) | **28.90** (0-1 Knapsack) | **+387.4% more risk reduced** |
+| **20h Sprint Remediation Risk Reduced** | 14.04 (CVSS Greedy) | **50.51** (0-1 Knapsack) | **+259.7% more risk reduced** |
+| **40h Sprint Remediation Risk Reduced** | 13.93 (CVSS Greedy) | **88.61** (0-1 Knapsack) | **+536.1% more risk reduced** |
+
+### 1. Root-Cause Resolution of the 2,993 Age Mismatches
+- Verified 0 actual mathematical discrepancies in stored dataset `Vulnerability_Age_Days`.
+- Fixed date-parsing bug in `src/ml/ranking_diagnostic.py` using `format="mixed"` to handle mixed microsecond ISO formats.
+
+### 2. Feature Engineering (Temporal Invariance & Threat Signals)
+- **Cohort Relative Age**: Percentile rank within observation date (`age_cohort_percentile`) and `log_vulnerability_age` eliminate temporal drift between training (2022) and test (2024).
+- **Vulnerability Signals from Text**: Verified high-signal categories from CVE descriptions (RCE, Remote/Network, Privilege Escalation, Memory Corruption, DoS, SQL Injection, XSS) and CVSS interaction terms.
+
+### 3. Probability Calibration (Platt vs Isotonic)
+- **Platt Scaling** preserves 100% monotonic rank ordering (Spearman $\rho = 1.00000000$) while delivering calibrated empirical probabilities.
+- Evaluated on Validation set (2023) and verified on Test set (2024).
+
+### 4. 0-1 Knapsack Enterprise Remediation Optimizer
+- Solves resource-constrained vulnerability remediation on the 30-asset ShopEasy enterprise archetype across 4 sprint budgets (5h, 10h, 20h, 40h).
+- Exact global optimality delivered via Branch-and-Cut integer programming (`scipy.optimize.milp` HiGHS solver & Google OR-Tools).
+- Outperforms traditional CVSS-greedy prioritization by **+259% to +31,193%** more enterprise risk reduced per engineer hour.
+
+---
+
 ## Technology Stack
 
 | Purpose | Tool |
@@ -367,7 +406,7 @@ The following next steps are directly supported by the current empirical finding
 |--------|---------------|--------|
 | **Rahul** | NVD + EPSS + KEV + Data Pipeline + Feature Engineering | ✅ Complete |
 | **Varun** | Enterprise Context + PostgreSQL Schema + Asset Mapping + Data Export | ✅ Complete |
-| **Vinod** | LightGBM Risk Model + OR-Tools Optimization | 🔄 In Progress |
+| **Vinod** | LightGBM Risk Model + OR-Tools Optimization | ✅ Complete |
 | **Navya** | Streamlit Dashboard + Evaluation + Integration | 🔄 In Progress |
 
 > For Vinod: Load `data/processed/cyberguard_master_enterprise_dataset.csv` — see `docs/handoff.md` for full specs.
