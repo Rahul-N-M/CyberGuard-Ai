@@ -52,7 +52,7 @@ NVD + EPSS + CISA KEV
 |--------|-------|--------|
 | NVD + EPSS + KEV data pipeline + feature engineering | **Rahul** | ✅ Complete |
 | Enterprise context, PostgreSQL schema, asset-CVE mapping | **Varun** | ✅ Complete |
-| LightGBM ML risk model + OR-Tools optimization | **Vinod** | 🔄 In Progress |
+| LightGBM ML risk model + OR-Tools optimization | **Vinod** | ✅ Complete |
 | Streamlit dashboard + evaluation + integration | **Navya** | 🔄 In Progress |
 
 ---
@@ -238,6 +238,151 @@ Metrics: Risk Reduction per Engineer-Hour at budgets of 5 / 10 / 20 / 40 hours, 
 
 ---
 
+## Machine Learning Pipeline
+
+The CyberGuard AI vulnerability prioritization engine utilizes a chronological, leakage-free temporal machine learning pipeline:
+
+```
+NVD CVE data
+   │
+   ▼
+EPSS matching (95.68% coverage)
+   │
+   ▼
+Temporal observation construction (monthly panel snapshots)
+   │
+   ▼
+180-day future KEV target definition (Target_KEV_180d)
+   │
+   ▼
+Chronological train/validation/test split (2022 / 2023 / 2024)
+   │
+   ▼
+Preprocessing & feature encoding
+   │
+   ▼
+LightGBM temporal baseline (scale_pos_weight = 1037.25)
+   │
+   ▼
+Probability prediction
+   │
+   ▼
+Threshold / ranking evaluation & calibration diagnostics
+   │
+   ▼
+Future enterprise prioritization / Google OR-Tools integration
+```
+
+### Dataset Scale
+
+- **Total CVEs**: 98,084 CVEs covering 2022–2024
+- **EPSS Matches**: 93,844 records matched
+- **EPSS Coverage**: **95.68%**
+- **Temporal Observations**: **1,535,261** total panel observations
+- **Positive Observations**: **601** (`Target_KEV_180d = 1`)
+- **Unique Positive CVEs**: **215**
+
+### Chronological Split
+
+To ensure zero temporal data leakage, splits are partitioned chronologically by observation year:
+
+- **2022 (Train)**: 141,202 observations | 136 positive observations | 53 unique positive CVEs
+- **2023 (Validation)**: 485,969 observations | 217 positive observations | 72 unique positive CVEs
+- **2024 (Test)**: 908,090 observations | 248 positive observations | 90 unique positive CVEs
+
+### Model Discrimination & Test Results
+
+- **Training (2022)**: ROC-AUC = `0.689193`, PR-AUC = `0.001922`
+- **Validation (2023)**: ROC-AUC = `0.670827`, PR-AUC = `0.001115`
+- **Test (2024)**: ROC-AUC = **0.629073**, PR-AUC = **0.000863**
+
+#### Operating Threshold 0.95 Evaluation (2024 Test Set)
+
+- **True Positives (TP)**: 109
+- **False Positives (FP)**: 81,851
+- **True Negatives (TN)**: 825,991
+- **False Negatives (FN)**: 139
+- **Precision**: 0.001330 (0.133%)
+- **Recall**: **43.95%** (109 / 248)
+- **F1-Score**: 0.002652
+
+> **Important Distinction**:  
+> "The 43.95% recall is obtained using a threshold of 0.95 and does NOT represent Top-500 recall."
+
+#### Corrected Top-K Evaluation (2024 Test Set)
+
+- **Precision@500**: **0.002000**
+- **Recall@500**: **0.004032** (0.4032%, capturing 1 TP out of 248)
+
+#### Probability Saturation & Baseline Limitations
+
+- **Probability Saturation**: 79,693 test observations (8.78% of the test set) received a predicted probability of `1.0000`. This massive tie group creates severe limitations for standalone Top-K ranking.
+- **Feature Reliance**: Saturation-group observations have a mean `Vulnerability_Age_Days` of 110.7 days (vs 448.2 days for prob < 1.0) and mean `CVSS_Score` of 8.66 (vs 6.66). The model strongly relies on vulnerability age (77.4% feature gain) and CVSS score (14.7% gain) as cohort proxies.
+- **Classification**: This model is a **Temporal LightGBM Baseline**, **NOT production-ready**. Standalone Top-K prioritization is not yet viable without richer technical features, probability calibration, and downstream enterprise asset-risk filtering.
+
+---
+
+## Pending Work
+
+The following next steps are directly supported by the current empirical findings:
+
+1. Investigate and resolve the 2,993 stored-vs-computed vulnerability-age mismatches.
+2. Enrich features with NVD CVSS vector components:
+   - Attack Vector (AV)
+   - Attack Complexity (AC)
+   - Privileges Required (PR)
+   - Scope (S)
+   - CWE classification taxonomy
+3. Evaluate relative/percentile vulnerability-age features to avoid cohort proxy saturation.
+4. Retrain and compare improved temporal LightGBM models against this baseline.
+5. Apply probability calibration (isotonic regression / Platt scaling) and evaluate whether ranking improves.
+6. Improve Top-K discrimination within high-probability tie clusters.
+7. Integrate enterprise asset context (business impact score, asset criticality, internet exposure) with vulnerability risk.
+8. Implement/validate Google OR-Tools remediation-budget optimization (0-1 Knapsack across 5h / 10h / 20h / 40h budgets).
+9. Perform additional temporal/generalization validation across multi-year sliding windows.
+10. Define final operational threshold based on enterprise remediation capacity and SLA requirements.
+
+---
+
+---
+
+## Improved LightGBM Model & 0-1 Knapsack Remediation Optimization
+
+Building upon the merged temporal baseline, the `vinod-ml-improvements` branch introduces relative cohort age normalization, exploit signal extraction, probability calibration, and exact 0-1 Knapsack remediation optimization.
+
+### Key Enhancements & Empirical Results
+
+| Metric / Dimension | Temporal Baseline | Improved Model + Platt Scaling | Impact |
+| :--- | :--- | :--- | :--- |
+| **Probability Saturation (`prob = 1.0`)** | **79,693 test rows** | **0 test rows** | **100% saturation eliminated** |
+| **Ties at Top-K Cutoff** | 79,693 tied rows | 3 to 168 rows | Granular, continuous risk discrimination |
+| **Test Set ROC-AUC (2024)** | 0.629073 | **0.754852** | **+0.1258 absolute (+20.0% gain)** |
+| **Test Brier Score** | Saturated | **0.00027357** | Well-calibrated risk probabilities |
+| **Test Expected Calibration Error (ECE)**| 0.000819 | **0.000197** | 76% reduction in calibration error |
+| **5h Sprint Remediation Risk Reduced** | 0.05 (CVSS Greedy) | **16.15** (0-1 Knapsack) | **+31,193% more risk reduced** |
+| **10h Sprint Remediation Risk Reduced** | 5.93 (CVSS Greedy) | **28.90** (0-1 Knapsack) | **+387.4% more risk reduced** |
+| **20h Sprint Remediation Risk Reduced** | 14.04 (CVSS Greedy) | **50.51** (0-1 Knapsack) | **+259.7% more risk reduced** |
+| **40h Sprint Remediation Risk Reduced** | 13.93 (CVSS Greedy) | **88.61** (0-1 Knapsack) | **+536.1% more risk reduced** |
+
+### 1. Root-Cause Resolution of the 2,993 Age Mismatches
+- Verified 0 actual mathematical discrepancies in stored dataset `Vulnerability_Age_Days`.
+- Fixed date-parsing bug in `src/ml/ranking_diagnostic.py` using `format="mixed"` to handle mixed microsecond ISO formats.
+
+### 2. Feature Engineering (Temporal Invariance & Threat Signals)
+- **Cohort Relative Age**: Percentile rank within observation date (`age_cohort_percentile`) and `log_vulnerability_age` eliminate temporal drift between training (2022) and test (2024).
+- **Vulnerability Signals from Text**: Verified high-signal categories from CVE descriptions (RCE, Remote/Network, Privilege Escalation, Memory Corruption, DoS, SQL Injection, XSS) and CVSS interaction terms.
+
+### 3. Probability Calibration (Platt vs Isotonic)
+- **Platt Scaling** preserves 100% monotonic rank ordering (Spearman $\rho = 1.00000000$) while delivering calibrated empirical probabilities.
+- Evaluated on Validation set (2023) and verified on Test set (2024).
+
+### 4. 0-1 Knapsack Enterprise Remediation Optimizer
+- Solves resource-constrained vulnerability remediation on the 30-asset ShopEasy enterprise archetype across 4 sprint budgets (5h, 10h, 20h, 40h).
+- Exact global optimality delivered via Branch-and-Cut integer programming (`scipy.optimize.milp` HiGHS solver & Google OR-Tools).
+- Outperforms traditional CVSS-greedy prioritization by **+259% to +31,193%** more enterprise risk reduced per engineer hour.
+
+---
+
 ## Technology Stack
 
 | Purpose | Tool |
@@ -261,7 +406,7 @@ Metrics: Risk Reduction per Engineer-Hour at budgets of 5 / 10 / 20 / 40 hours, 
 |--------|---------------|--------|
 | **Rahul** | NVD + EPSS + KEV + Data Pipeline + Feature Engineering | ✅ Complete |
 | **Varun** | Enterprise Context + PostgreSQL Schema + Asset Mapping + Data Export | ✅ Complete |
-| **Vinod** | LightGBM Risk Model + OR-Tools Optimization | 🔄 In Progress |
+| **Vinod** | LightGBM Risk Model + OR-Tools Optimization | ✅ Complete |
 | **Navya** | Streamlit Dashboard + Evaluation + Integration | 🔄 In Progress |
 
 > For Vinod: Load `data/processed/cyberguard_master_enterprise_dataset.csv` — see `docs/handoff.md` for full specs.

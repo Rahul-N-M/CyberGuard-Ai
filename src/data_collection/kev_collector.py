@@ -12,6 +12,7 @@ data = response.json()
 records = []
 
 for item in data["vulnerabilities"]:
+
     records.append({
         "CVE_ID": item["cveID"],
         "KEV": 1,
@@ -22,7 +23,10 @@ for item in data["vulnerabilities"]:
 
 df = pd.DataFrame(records)
 
-df.to_csv("data/raw/kev_data.csv", index=False)
+df.to_csv(
+    "data/raw/kev_data.csv",
+    index=False
+)
 
 print("KEV vulnerabilities:", len(df))
 print("Saved to: data/raw/kev_data.csv")
