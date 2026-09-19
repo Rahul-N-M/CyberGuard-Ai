@@ -1,0 +1,14 @@
+Model,Dataset,Split,Threshold,ROC_AUC,PR_AUC,F1_minority,Precision,Recall,Brier_Score,Precision@100,Recall@100,Precision@500,Recall@500,Actual_Positives,note
+Alperin RF (TF-IDF + RF),CyberGuard 2022-2024,Test (2024),0.50,0.567095,0.000547,0.0,0.0,0.0,0.000345,0.0,0.0,0.0,0.0,248,
+LightGBM v1 (baseline),CyberGuard 2022-2024,Validation (2023),0.5,0.670827,0.001115,0.00215,0.001077,0.626728,0.21955887,,,,,217,
+LightGBM v1 (baseline),CyberGuard 2022-2024,Test (2024),0.50,0.629073,0.000863,0.001808,0.000905,0.548387,0.14020814,0.0,0.0,0.002,0.004032,248,
+LightGBM v1 (baseline),CyberGuard 2022-2024,Test (2024),1.000 (val-opt),0.629073,0.000863,0.002727,0.001368,0.439516,0.14020814,0.0,0.0,0.002,0.004032,248,
+LightGBM v2 (improved),CyberGuard 2022-2024,Test (2024),0.50,0.754852,0.000759,0.0,0.0,0.0,0.00027357,0.0,0.0,0.0,0.0,248,
+FastEmbed (our data),CyberGuard 2022-2024,Validation (2023),0.5,0.634114,0.014026,0.041783,0.023232,0.207373,0.00423909,,,,,217,
+FastEmbed (our data),CyberGuard 2022-2024,Test (2024),0.50,0.51739,0.000377,0.002308,0.001203,0.028226,0.0066614,0.0,0.0,0.0,0.0,248,
+FastEmbed (our data),CyberGuard 2022-2024,Test (2024),1.000 (val-opt),0.51739,0.000377,0.002742,0.001652,0.008065,0.0066614,0.0,0.0,0.0,0.0,248,
+CyberGuard v3 (ensemble),CyberGuard 2022-2024,Validation (2023),0.5,0.750282,0.002191,0.0,0.0,0.0,0.00044631,,,,,217,
+CyberGuard v3 (ensemble),CyberGuard 2022-2024,Test (2024),0.50,0.772004,0.001223,0.0,0.0,0.0,0.00027326,0.0,0.0,0.0,0.0,248,
+CyberGuard v3 (ensemble),CyberGuard 2022-2024,Test (2024),0.013 (val-opt),0.772004,0.001223,0.0,0.0,0.0,0.00027326,0.0,0.0,0.0,0.0,248,
+FastEmbed (Fang et al. 2020) — PAPER REPORTED (their 2010-2018 data),NVD 2010-2018 (~3% exploit rate),Test (2017-2018),paper-reported,0.9312,,0.586,0.567,0.607,,,,,,~3% of dataset,"Darkweb/deepweb features included. Not directly comparable (different dataset, 10-100x less imbalanced)."
+CyberGuard v3 (Ensemble),Fang et al. 2013-2018 Reference NVD Dataset,5-Fold CV (Paper Setup),0.50,,,,,,,,,,,"8,757 (14.4%)",Evaluated on reference dataset with pure NVD pre-exploit features

@@ -222,8 +222,8 @@ leakage_found = [c for c in raw_feat_cols if any(t in c.lower() for t in leakage
 print(f"  Leakage columns found  : {leakage_found if leakage_found else 'NONE'}")
 
 # Check Published_Date vs Observation_Date alignment (age must be >= 0)
-df_test["pub_dt"] = pd.to_datetime(df_test["Published_Date"], utc=True, errors="coerce")
-df_test["obs_dt2"] = pd.to_datetime(df_test["Observation_Date"], utc=True, errors="coerce")
+df_test["pub_dt"] = pd.to_datetime(df_test["Published_Date"], utc=True, format="mixed")
+df_test["obs_dt2"] = pd.to_datetime(df_test["Observation_Date"], utc=True, format="mixed")
 df_test["computed_age"] = (df_test["obs_dt2"] - df_test["pub_dt"]).dt.days
 
 age_mismatch = (df_test["Vulnerability_Age_Days"] != df_test["computed_age"]).sum()
