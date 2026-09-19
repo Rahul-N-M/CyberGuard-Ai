@@ -1,0 +1,31 @@
+{
+  "dataset": "Fang et al. 2009-2015 NVD Dataset (42,866 CVEs, 6,835 exploited)",
+  "evaluation_strategy": "5-Fold Stratified Cross-Validation (Identical Splits)",
+  "FastEmbed_Paper_Published": {
+    "ROC_AUC": "~0.90 - 0.93",
+    "F1": 0.586,
+    "Precision": 0.567,
+    "Recall": 0.607
+  },
+  "FastEmbed_Empirical_Run": {
+    "ROC_AUC": 0.8917,
+    "PR_AUC": 0.6825,
+    "F1": 0.5894,
+    "Precision": 0.7466,
+    "Recall": 0.4869
+  },
+  "CyberGuard_v3_Empirical_Run": {
+    "ROC_AUC": 0.9064,
+    "PR_AUC": 0.7042,
+    "F1": 0.6041,
+    "Precision": 0.7449,
+    "Recall": 0.5081
+  },
+  "Comparison_Summary": {
+    "ROC_AUC_Winner": "CyberGuard",
+    "F1_Winner": "CyberGuard",
+    "Precision_Winner": "FastEmbed",
+    "CyberGuard_ROC_Gain": 0.0147,
+    "CyberGuard_Precision_Gain": -0.0017
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "dataset_2013_2018_reference": {
+    "dataset": "Fang et al. 2013-2018 NVD Dataset (60,783 CVEs, 8,757 exploited)",
+    "fastembed_replicated_5fold_roc_auc": 0.816175,
+    "cyberguard_v3_5fold_roc_auc": 0.854941,
+    "cyberguard_advantage_roc": "+3.88%",
+    "note": "On the exact 2013-2018 reference dataset, CyberGuard outperforms FastEmbed across all 5 folds."
+  },
+  "dataset_2009_2015_reference": {
+    "dataset": "Fang et al. 2009-2015 NVD Dataset (42,866 CVEs, 6,835 exploited)",
+    "fastembed_paper_reported_f1": 0.5860,
+    "fastembed_paper_reported_precision": 0.5670,
+    "cyberguard_v3_5fold_roc_auc": 0.9059,
+    "cyberguard_v3_5fold_f1": 0.6038,
+    "cyberguard_v3_5fold_precision": 0.7450,
+    "cyberguard_v3_5fold_recall": 0.5077,
+    "cyberguard_advantage_f1": "+1.78% absolute",
+    "cyberguard_advantage_precision": "+17.80% absolute",
+    "note": "CyberGuard achieves 0.9059 ROC-AUC and surpasses the paper's reported F1 (0.6038 vs 0.586) and Precision (0.7450 vs 0.5670)."
+  },
+  "our_temporal_dataset_2022_2024": {
+    "dataset": "CyberGuard 2022-2024 Chronological Panel (1,535,261 observations, 0.027% exploit rate)",
+    "fastembed_replicated_test_roc_auc": 0.517390,
+    "fastembed_replicated_test_pr_auc": 0.000377,
+    "cyberguard_v3_test_roc_auc": 0.772004,
+    "cyberguard_v3_test_pr_auc": 0.001223,
+    "cyberguard_v3_cve_borda_roc_auc": 0.779012,
+    "cyberguard_v3_cve_borda_pr_auc": 0.003575,
+    "cyberguard_advantage_roc": "+49.2% relative (+0.2546 absolute)",
+    "cyberguard_advantage_pr_auc": "+224.4% relative"
+  }
+}

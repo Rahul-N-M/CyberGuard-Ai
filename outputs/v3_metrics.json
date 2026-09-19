@@ -1,0 +1,297 @@
+{
+  "model": "CyberGuard-Ensemble v3",
+  "base_learners": [
+    "lgbm",
+    "xgb",
+    "et"
+  ],
+  "best_threshold_from_val": 0.01223959131589371,
+  "cve_level_roc_auc": 0.779006,
+  "cve_level_pr_auc": 0.003575,
+  "threshold_0.5": {
+    "train": {
+      "ROC_AUC": 0.999783,
+      "PR_AUC": 0.738026,
+      "Brier_Score": 0.00080513,
+      "Threshold": 0.5,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "Confusion_Matrix": [
+        [
+          141066,
+          0
+        ],
+        [
+          136,
+          0
+        ]
+      ],
+      "Total_Rows": 141202,
+      "Actual_Positives": 136,
+      "Predicted_Positives": 0,
+      "Precision@10": 1.0,
+      "Recall@10": 0.073529,
+      "Positives@10": 10,
+      "Precision@25": 0.96,
+      "Recall@25": 0.176471,
+      "Positives@25": 24,
+      "Precision@50": 0.7,
+      "Recall@50": 0.257353,
+      "Positives@50": 35,
+      "Precision@100": 0.58,
+      "Recall@100": 0.426471,
+      "Positives@100": 58,
+      "Precision@200": 0.68,
+      "Recall@200": 1.0,
+      "Positives@200": 136,
+      "Precision@500": 0.272,
+      "Recall@500": 1.0,
+      "Positives@500": 136,
+      "Precision@1000": 0.136,
+      "Recall@1000": 1.0,
+      "Positives@1000": 136,
+      "Precision@5000": 0.0272,
+      "Recall@5000": 1.0,
+      "Positives@5000": 136
+    },
+    "validation": {
+      "ROC_AUC": 0.750282,
+      "PR_AUC": 0.002191,
+      "Brier_Score": 0.00044631,
+      "Threshold": 0.5,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "Confusion_Matrix": [
+        [
+          485752,
+          0
+        ],
+        [
+          217,
+          0
+        ]
+      ],
+      "Total_Rows": 485969,
+      "Actual_Positives": 217,
+      "Predicted_Positives": 0,
+      "Precision@10": 0.0,
+      "Recall@10": 0.0,
+      "Positives@10": 0,
+      "Precision@25": 0.0,
+      "Recall@25": 0.0,
+      "Positives@25": 0,
+      "Precision@50": 0.0,
+      "Recall@50": 0.0,
+      "Positives@50": 0,
+      "Precision@100": 0.01,
+      "Recall@100": 0.004608,
+      "Positives@100": 1,
+      "Precision@200": 0.01,
+      "Recall@200": 0.009217,
+      "Positives@200": 2,
+      "Precision@500": 0.008,
+      "Recall@500": 0.018433,
+      "Positives@500": 4,
+      "Precision@1000": 0.005,
+      "Recall@1000": 0.023041,
+      "Positives@1000": 5,
+      "Precision@5000": 0.0038,
+      "Recall@5000": 0.087558,
+      "Positives@5000": 19
+    },
+    "test": {
+      "ROC_AUC": 0.772004,
+      "PR_AUC": 0.001223,
+      "Brier_Score": 0.00027326,
+      "Threshold": 0.5,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1_Score": 0.0,
+      "Confusion_Matrix": [
+        [
+          907842,
+          0
+        ],
+        [
+          248,
+          0
+        ]
+      ],
+      "Total_Rows": 908090,
+      "Actual_Positives": 248,
+      "Predicted_Positives": 0,
+      "Precision@10": 0.0,
+      "Recall@10": 0.0,
+      "Positives@10": 0,
+      "Precision@25": 0.0,
+      "Recall@25": 0.0,
+      "Positives@25": 0,
+      "Precision@50": 0.0,
+      "Recall@50": 0.0,
+      "Positives@50": 0,
+      "Precision@100": 0.0,
+      "Recall@100": 0.0,
+      "Positives@100": 0,
+      "Precision@200": 0.0,
+      "Recall@200": 0.0,
+      "Positives@200": 0,
+      "Precision@500": 0.0,
+      "Recall@500": 0.0,
+      "Positives@500": 0,
+      "Precision@1000": 0.003,
+      "Recall@1000": 0.012097,
+      "Positives@1000": 3,
+      "Precision@5000": 0.0024,
+      "Recall@5000": 0.048387,
+      "Positives@5000": 12
+    }
+  },
+  "threshold_optimal": {
+    "train": {
+      "ROC_AUC": 0.999783,
+      "PR_AUC": 0.738026,
+      "Brier_Score": 0.00080513,
+      "Threshold": 0.01223959131589371,
+      "Precision": 0.212833,
+      "Recall": 1.0,
+      "F1_Score": 0.350968,
+      "Confusion_Matrix": [
+        [
+          140563,
+          503
+        ],
+        [
+          0,
+          136
+        ]
+      ],
+      "Total_Rows": 141202,
+      "Actual_Positives": 136,
+      "Predicted_Positives": 639,
+      "Precision@10": 1.0,
+      "Recall@10": 0.073529,
+      "Positives@10": 10,
+      "Precision@25": 0.96,
+      "Recall@25": 0.176471,
+      "Positives@25": 24,
+      "Precision@50": 0.7,
+      "Recall@50": 0.257353,
+      "Positives@50": 35,
+      "Precision@100": 0.58,
+      "Recall@100": 0.426471,
+      "Positives@100": 58,
+      "Precision@200": 0.68,
+      "Recall@200": 1.0,
+      "Positives@200": 136,
+      "Precision@500": 0.272,
+      "Recall@500": 1.0,
+      "Positives@500": 136,
+      "Precision@1000": 0.136,
+      "Recall@1000": 1.0,
+      "Positives@1000": 136,
+      "Precision@5000": 0.0272,
+      "Recall@5000": 1.0,
+      "Positives@5000": 136
+    },
+    "validation": {
+      "ROC_AUC": 0.750282,
+      "PR_AUC": 0.002191,
+      "Brier_Score": 0.00044631,
+      "Threshold": 0.01223959131589371,
+      "Precision": 0.00823,
+      "Recall": 0.018433,
+      "F1_Score": 0.01138,
+      "Confusion_Matrix": [
+        [
+          485270,
+          482
+        ],
+        [
+          213,
+          4
+        ]
+      ],
+      "Total_Rows": 485969,
+      "Actual_Positives": 217,
+      "Predicted_Positives": 486,
+      "Precision@10": 0.0,
+      "Recall@10": 0.0,
+      "Positives@10": 0,
+      "Precision@25": 0.0,
+      "Recall@25": 0.0,
+      "Positives@25": 0,
+      "Precision@50": 0.0,
+      "Recall@50": 0.0,
+      "Positives@50": 0,
+      "Precision@100": 0.01,
+      "Recall@100": 0.004608,
+      "Positives@100": 1,
+      "Precision@200": 0.01,
+      "Recall@200": 0.009217,
+      "Positives@200": 2,
+      "Precision@500": 0.008,
+      "Recall@500": 0.018433,
+      "Positives@500": 4,
+      "Precision@1000": 0.005,
+      "Recall@1000": 0.023041,
+      "Positives@1000": 5,
+      "Precision@5000": 0.0038,
+      "Recall@5000": 0.087558,
+      "Positives@5000": 19
+    },
+    "test": {
+      "ROC_AUC": 0.772004,
+      "PR_AUC": 0.001223,
+      "Brier_Score": 0.00027326,
+      "Threshold": 0.01223959131589371,
+      "Precision": 0.003279,
+      "Recall": 0.008065,
+      "F1_Score": 0.004662,
+      "Confusion_Matrix": [
+        [
+          907234,
+          608
+        ],
+        [
+          246,
+          2
+        ]
+      ],
+      "Total_Rows": 908090,
+      "Actual_Positives": 248,
+      "Predicted_Positives": 610,
+      "Precision@10": 0.0,
+      "Recall@10": 0.0,
+      "Positives@10": 0,
+      "Precision@25": 0.0,
+      "Recall@25": 0.0,
+      "Positives@25": 0,
+      "Precision@50": 0.0,
+      "Recall@50": 0.0,
+      "Positives@50": 0,
+      "Precision@100": 0.0,
+      "Recall@100": 0.0,
+      "Positives@100": 0,
+      "Precision@200": 0.0,
+      "Recall@200": 0.0,
+      "Positives@200": 0,
+      "Precision@500": 0.0,
+      "Recall@500": 0.0,
+      "Positives@500": 0,
+      "Precision@1000": 0.003,
+      "Recall@1000": 0.012097,
+      "Positives@1000": 3,
+      "Precision@5000": 0.0024,
+      "Recall@5000": 0.048387,
+      "Positives@5000": 12
+    }
+  },
+  "individual_base_val_roc": {
+    "lgbm": 0.748411,
+    "xgb": 0.760505,
+    "et": 0.770916
+  },
+  "stacked_val_roc": 0.750282
+}
