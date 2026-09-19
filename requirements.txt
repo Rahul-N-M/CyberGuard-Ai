@@ -1,37 +1,46 @@
 # CyberGuard AI - Python Dependencies
 
-# Data handling
+# Core Data Handling
 pandas>=2.0.0
 numpy>=1.24.0
+scipy>=1.10.0
 
 # Database
 sqlalchemy>=2.0.0
 psycopg2-binary>=2.9.0
 python-dotenv>=1.0.0
 
-# Machine Learning (for Vinod)
+# Machine Learning & Ensembles (CyberGuard v3 & Baselines)
 scikit-learn>=1.3.0
 lightgbm>=4.0.0
 xgboost>=2.0.0
-gensim>=4.3.0          # FastText embeddings (FastEmbed replication)
+gensim>=4.3.0          # FastText embeddings (FastEmbed paper replication)
 joblib>=1.3.0
+# catboost>=1.2.0      # optional: uncomment if CatBoost is needed
 
-# Ensemble & Calibration (CyberGuard v3)
-# catboost>=1.2.0      # optional: uncomment if catboost is installed
-
-# Optimization (for Vinod)
+# Constrained Optimization (0-1 Knapsack)
 ortools>=9.7.0
 
-# Dashboard (for Navya)
-streamlit>=1.28.0
+# Visualization & Plotting (All Notebooks)
+matplotlib>=3.7.0
 plotly>=5.17.0
+seaborn>=0.12.0
 
-# Document generation
+# Jupyter Notebook Environment & Automated Execution
+jupyter>=1.0.0
+ipykernel>=6.20.0
+nbformat>=5.9.0
+nbclient>=0.8.0
+
+# Dashboard (Interactive UI)
+streamlit>=1.28.0
+
+# Document & Report Generation
 python-docx>=1.0.0
 
-# HTTP requests (for data collection)
+# HTTP & Threat Intelligence APIs
 requests>=2.31.0
 
-# Testing
+# Testing & CI
 pytest>=7.4.0
 pytest-cov>=4.1.0
