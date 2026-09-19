@@ -15,7 +15,12 @@ data/cyberguard.db
 docs/handoff.md
 docs/handoff.docx
 docs/*handoff*
-# ML generated datasets
+# ML generated and reference datasets
+FastEmbed-data.rar
+data/*.csv
+data/*.json
+data/*.txt
+data/processed_reference/
 data/processed/risk_features.csv
 data/processed/ml/
 data/train.csv
@@ -27,11 +32,11 @@ data/processed/baseline_test.csv
 data/processed/*.csv
 
 # ML generated models
-models/*.pkl
-models/*.txt
+models/
 
 # ML generated prediction outputs
 outputs/*.csv
+!outputs/model_comparison_all.csv
 
 # Generated plots
 outputs/*.png
@@ -40,6 +45,11 @@ outputs/*.png
 reports/*.md
 reports/*.json
 !reports/ml_results_summary.md
+!reports/model_comparison_report.md
+!reports/cyberguard_v3_report.md
+!reports/fastembed_baseline_report.md
+!reports/benchmark_2009_2015_report.md
+!reports/cyberguard_on_reference_report.md
 
 
 # Local LightGBM native binary

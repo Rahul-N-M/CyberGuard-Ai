@@ -1,1 +1,1 @@
-" \Optimization package.\\n
+"""CyberGuard Optimization package."""
