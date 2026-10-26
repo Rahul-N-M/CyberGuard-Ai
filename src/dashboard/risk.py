@@ -10,6 +10,7 @@ from src.optimization.knapsack_solver import (
     compute_risk_scores,
     get_actionable_dataframe,
     solve_greedy_cvss,
+    solve_greedy_risk_per_hour,
     solve_knapsack,
 )
 
@@ -33,7 +34,7 @@ def actionable_risk_actions() -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def optimize_budget(budget_hours: float) -> dict:
-    """Run the actual exact solver and the repository's naive CVSS baseline."""
+    """Run the exact solver, the risk-density greedy heuristic, and the naive CVSS baseline."""
     actions = actionable_risk_actions().reset_index(drop=True)
     values = actions["risk_score"].to_numpy(dtype=float)
     weights = actions["remediation_hours"].to_numpy(dtype=float)
@@ -47,7 +48,10 @@ def optimize_budget(budget_hours: float) -> dict:
     else:
         selected_positions = np.array([], dtype=int)
         exact_risk, used_hours, solver_name = 0.0, 0.0, "no_feasible_actions"
+    
     baseline_idx, baseline_risk, baseline_hours = solve_greedy_cvss(actions, budget_hours)
+    density_idx, density_risk, density_hours = solve_greedy_risk_per_hour(actions, budget_hours)
+    
     chosen = actions.iloc[selected_positions].copy()
     chosen["risk_per_hour"] = chosen["risk_score"] / chosen["remediation_hours"]
     return {
@@ -58,8 +62,13 @@ def optimize_budget(budget_hours: float) -> dict:
         "solver": solver_name,
         "baseline_risk": float(baseline_risk),
         "baseline_hours": float(baseline_hours),
+        "baseline_fixes": int(len(baseline_idx)),
+        "density_risk": float(density_risk),
+        "density_hours": float(density_hours),
+        "density_fixes": int(len(density_idx)),
         "improvement_pct": (
             (float(exact_risk) - float(baseline_risk)) / float(baseline_risk) * 100
             if baseline_risk > 0 else None
         ),
     }
+

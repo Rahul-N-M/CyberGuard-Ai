@@ -58,7 +58,19 @@ def render() -> None:
         )
         chart.update_layout(margin=dict(l=0, r=0, t=10, b=0), xaxis_tickangle=-25)
         st.plotly_chart(chart, use_container_width=True)
-    st.caption(
-        "Software tags and mapped vulnerability counts come from the existing repository exports. "
-        "Risk indicators use the existing EPSS + KEV business-risk assumptions."
+
+    st.subheader("🔍 Asset Vulnerability Drill-Down")
+    selected_asset_id = st.selectbox(
+        "Select an asset to view its vulnerability surface:",
+        filtered["asset_id"].tolist(),
+        format_func=lambda aid: f"{aid} · {filtered.loc[filtered['asset_id'] == aid, 'asset_name'].values[0]} ({filtered.loc[filtered['asset_id'] == aid, 'department_name'].values[0]})",
     )
+    if selected_asset_id:
+        asset_vulns = risks[risks["asset_id"] == selected_asset_id].copy()
+        if not asset_vulns.empty:
+            st.caption(f"{len(asset_vulns)} vulnerabilities mapped to {selected_asset_id}. Showing top prioritized flaws:")
+            drill_cols = [col for col in ("cve_id", "severity", "cvss_score", "epss_score", "kev", "remediation_hours", "risk_score", "status") if col in asset_vulns.columns]
+            st.dataframe(asset_vulns[drill_cols].sort_values("risk_score", ascending=False).head(20), use_container_width=True, hide_index=True)
+        else:
+            st.info("No active vulnerabilities mapped to this asset.")
+

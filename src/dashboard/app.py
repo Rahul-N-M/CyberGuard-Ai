@@ -13,12 +13,9 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.dashboard.data import DashboardDataError
 from src.dashboard.views import (
     assets,
-    explainability,
     overview,
     performance,
     prioritization,
-    remediation,
-    threat_intelligence,
 )
 
 
@@ -90,31 +87,27 @@ with st.sidebar:
     page = st.selectbox(
         "Workspace",
         [
-            "Executive overview",
-            "Threat intelligence",
-            "Vulnerability prioritization",
-            "Remediation optimizer",
+            "Executive remediation console",
+            "Academic benchmarks & ML performance",
+            "Vulnerability prioritization matrix",
             "Enterprise asset inventory",
-            "Model performance",
-            "Explainability & insights",
         ],
         label_visibility="collapsed",
     )
     st.divider()
-    st.caption("Local project data · no live API calls")
+    st.caption("Local verified artifacts · Zero live API latency")
     if st.button("Refresh cached data", use_container_width=True):
         st.cache_data.clear()
         st.rerun()
 
 renderers = {
-    "Executive overview": overview.render,
-    "Threat intelligence": threat_intelligence.render,
-    "Vulnerability prioritization": prioritization.render,
-    "Remediation optimizer": remediation.render,
+    "Executive remediation console": overview.render,
+    "Academic benchmarks & ML performance": performance.render,
+    "Vulnerability prioritization matrix": prioritization.render,
     "Enterprise asset inventory": assets.render,
-    "Model performance": performance.render,
-    "Explainability & insights": explainability.render,
 }
+
+
 
 try:
     renderers[page]()

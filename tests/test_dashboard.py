@@ -41,3 +41,21 @@ def test_exact_solver_never_exceeds_budget():
     assert set(selected) == {0, 1}
     assert value == 9.0
     assert hours <= 7.0
+
+
+def test_dashboard_loads_feature_importance_and_metrics():
+    from src.dashboard.data import load_feature_importance, load_model_metrics, load_calibrated_predictions
+    feat_df = load_feature_importance()
+    assert not feat_df.empty
+    assert "importance_gain" in feat_df.columns
+    assert "feature" in feat_df.columns
+
+    metrics = load_model_metrics()
+    assert "v3_metrics.json" in metrics
+    assert "benchmark_2009_2015_comparison.json" in metrics
+
+    preds = load_calibrated_predictions()
+    assert not preds.empty
+    assert "cve_id" in preds.columns
+    assert "model_probability" in preds.columns
+

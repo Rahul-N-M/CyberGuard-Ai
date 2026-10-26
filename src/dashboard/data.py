@@ -127,8 +127,38 @@ def load_threat_intelligence() -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=False)
+def load_feature_importance() -> pd.DataFrame:
+    """Load feature importance rankings from existing training outputs."""
+    path = OUTPUTS_DIR / "lightgbm_feature_importance.csv"
+    df = _read_csv(path, required=False)
+    if not df.empty and "importance_gain" in df.columns:
+        total_gain = df["importance_gain"].sum()
+        if total_gain > 0:
+            df["gain_pct"] = (df["importance_gain"] / total_gain) * 100
+        df = df.sort_values("importance_gain", ascending=False).reset_index(drop=True)
+    return df
+
+
+@st.cache_data(show_spinner=False)
+def load_cve_level_scores() -> pd.DataFrame:
+    """Load pre-aggregated CVE-level Borda rank and calibrated probability scores."""
+    path = OUTPUTS_DIR / "v3_cve_level_scores.csv"
+    df = _read_csv(path, required=False)
+    if not df.empty and "CVE_ID" in df.columns:
+        return df.rename(columns={"CVE_ID": "cve_id"})
+    return pd.DataFrame()
+
+
+@st.cache_data(show_spinner=False)
 def load_calibrated_predictions() -> pd.DataFrame:
-    """Load optional calibrated row predictions; never treat rank scores as probabilities."""
+    """Load calibrated predictions using pre-aggregated scores if available, or test predictions."""
+    cve_scores = load_cve_level_scores()
+    if not cve_scores.empty and "prob_last" in cve_scores.columns:
+        result = cve_scores[["cve_id", "prob_last"]].rename(columns={"prob_last": "model_probability"})
+        if "borda_mean" in cve_scores.columns:
+            result["borda_rank_score"] = cve_scores["borda_mean"]
+        return result
+
     path = OUTPUTS_DIR / "v3_predictions_test.csv"
     predictions = _read_csv(path, required=False)
     expected = {"CVE_ID", "Observation_Date", "predicted_prob"}
@@ -171,6 +201,8 @@ def latest_data_refresh() -> pd.Timestamp | None:
         DATA_DIR / "raw" / "kev_data.csv",
         DATA_DIR / "processed" / "asset_vulnerabilities.csv",
         OUTPUTS_DIR / "v3_predictions_test.csv",
+        OUTPUTS_DIR / "v3_cve_level_scores.csv",
     ]
     existing = [p.stat().st_mtime for p in paths if p.is_file()]
     return pd.to_datetime(max(existing), unit="s", utc=True) if existing else None
+
